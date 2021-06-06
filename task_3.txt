@@ -1,0 +1,22 @@
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('1');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('2');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('3');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('1');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('2');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('1');
+
+
+(SELECT title, COUNT(*) as count_of_tickets, SUM(price) as total_price
+from (SELECT s.idsessions, title, price, idtickets 
+	FROM (SELECT idsessions, title, price FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms) s
+	JOIN cinema.tickets t ON s.idsessions = t.idsessions) tbl
+GROUP BY idsessions)
+UNION
+(SELECT 'хрнц' title, SUM(count_of_tickets), SUM(total_price)
+from (SELECT title, COUNT(*) as count_of_tickets, SUM(price) as total_price
+from (SELECT s.idsessions, title, price, idtickets 
+	FROM (SELECT idsessions, title, price FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms) s
+	JOIN cinema.tickets t ON s.idsessions = t.idsessions) tbl
+GROUP BY idsessions) tbl);

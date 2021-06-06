@@ -1,0 +1,55 @@
+CREATE SCHEMA `cinema` ;
+
+
+
+CREATE TABLE `cinema`.`films` (
+  `idfilms` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(45) NOT NULL,
+  `duration` TIME NOT NULL,
+  PRIMARY KEY (`idfilms`),
+  UNIQUE INDEX `name_UNIQUE` (`title` ASC) VISIBLE);
+
+INSERT INTO `cinema`.`films` (`title`, `duration`) VALUES ('film1', '1:00:00');
+INSERT INTO `cinema`.`films` (`title`, `duration`) VALUES ('film2', '1:30:00');
+INSERT INTO `cinema`.`films` (`title`, `duration`) VALUES ('film3', '2:00:00');
+INSERT INTO `cinema`.`films` (`title`, `duration`) VALUES ('film4', '1:00:00');
+INSERT INTO `cinema`.`films` (`title`, `duration`) VALUES ('film5', '1:0:00');
+
+CREATE TABLE `cinema`.`sessions` (
+  `idsessions` INT NOT NULL AUTO_INCREMENT,
+  `idfilms` INT NOT NULL,
+  `start_time` TIME NOT NULL,
+  `price` INT NOT NULL,
+  PRIMARY KEY (`idsessions`),
+  INDEX `fk_idfilms_idx` (`idfilms` ASC) VISIBLE,
+  CONSTRAINT `fk_idfilms`
+    FOREIGN KEY (`idfilms`)
+    REFERENCES `cinema`.`films` (`idfilms`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO `cinema`.`sessions` (`idfilms`, `start_time`, `price`) VALUES ('1', '10:00:00', '100');
+INSERT INTO `cinema`.`sessions` (`idfilms`, `start_time`, `price`) VALUES ('2', '11:00:00', '50');
+INSERT INTO `cinema`.`sessions` (`idfilms`, `start_time`, `price`) VALUES ('3', '12:00:00', '200');
+INSERT INTO `cinema`.`sessions` (`idfilms`, `start_time`, `price`) VALUES ('4', '13:00:00', '50');
+
+
+CREATE TABLE `cinema`.`tickets` (
+  `idtickets` BIGINT NOT NULL AUTO_INCREMENT,
+  `idsessions` INT NOT NULL,
+  PRIMARY KEY (`idtickets`),
+  INDEX `fk_idsessions_idx` (`idsessions` ASC) VISIBLE,
+  CONSTRAINT `fk_idsessions`
+    FOREIGN KEY (`idsessions`)
+    REFERENCES `cinema`.`sessions` (`idsessions`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('1');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('2');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('3');
+INSERT INTO `cinema`.`tickets` (`idsessions`) VALUES ('4');
+
+
+
+

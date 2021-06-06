@@ -1,0 +1,14 @@
+SELECT m1.id_film as 'фильм 1',
+       m1.start_time,
+       m1.duration,
+       m2.id_film as 'фильм 2',
+       m2.start_time,
+       m2.duration
+FROM (SELECT idsessions as id, f.idfilms as id_film, start_time, duration  FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms
+         order by start_time) m1 
+         JOIN (SELECT idsessions as id, f.idfilms as id_film, start_time, duration  FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms
+         order by start_time) m2 
+WHERE m1.id != m2.id AND (m2.start_time BETWEEN m1.start_time AND (m1.start_time + m1.duration))
+ORDER BY m1.start_time;      
