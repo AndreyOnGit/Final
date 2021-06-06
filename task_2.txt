@@ -1,0 +1,22 @@
+UPDATE `cinema`.`sessions` SET `start_time` = '12:00:00' WHERE (`idsessions` = '2');
+UPDATE `cinema`.`sessions` SET `start_time` = '15:00:00' WHERE (`idsessions` = '3');
+UPDATE `cinema`.`sessions` SET `start_time` = '20:00:00' WHERE (`idsessions` = '4');
+
+
+INSERT INTO `cinema`.`sessions` (`idfilms`, `start_time`, `price`) VALUES ('1', '21:31:00', '100');
+
+
+
+SELECT m1.id_film as 'фильм 1',
+       m1.start_time as 'время начала',
+       m1.duration as 'длительность',
+       m2.start_time as 'время начала второго фильма',
+       MIN(TIMESTAMPDIFF(minute, TIME(m1.start_time + m1.duration), m2.start_time)) as 'длительность перерыва'
+FROM (SELECT idsessions as id, f.idfilms as id_film, start_time, duration  FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms) m1 
+         JOIN (SELECT idsessions as id, f.idfilms as id_film, start_time, duration  FROM cinema.sessions s
+         JOIN cinema.films f ON f.idfilms = s.idfilms) m2
+WHERE m1.id != m2.id AND ((m1.start_time + m1.duration) < m2.start_time)
+GROUP BY m1.start_time
+HAVING (TIMESTAMPDIFF(minute, TIME(m1.start_time + m1.duration), m2.start_time)) >=30
+ORDER BY (TIMESTAMPDIFF(minute, TIME(m1.start_time + m1.duration), m2.start_time)) DESC;
