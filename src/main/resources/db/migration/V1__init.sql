@@ -1,0 +1,23 @@
+create table students (id bigserial primary key, name varchar(255), age int);
+insert into students (name, age) values
+('student_1', 20),
+('student_2', 21),
+('student_3', 22),
+('student_4', 18),
+('student_5', 16),
+('student_6', 17),
+('student_7', 15),
+('student_8', 20),
+('student_9', 17),
+('student_10', 20),
+('student_11', 20),
+('student_12', 19),
+('student_13', 18),
+('student_14', 17),
+('student_15', 16),
+('student_16', 18),
+('student_17', 19),
+('student_18', 20),
+('student_19', 18),
+('student_20', 21),
+('student_21', 20);
